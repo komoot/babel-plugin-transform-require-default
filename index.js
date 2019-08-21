@@ -63,7 +63,9 @@ module.exports = function (babel, options) {
           if (!requirePaths.length) return;
           path.node.body.unshift(template(requireDefaultFuncTemp)());
           requirePaths.forEach(function(p) {
-            p.replaceWithSourceString(`${requireDefaultFunc}(require("${p.node.arguments[0].value}"))`);
+            if (typeof p.node.arguments[0].value !== 'undefined') {
+              p.replaceWithSourceString(`${requireDefaultFunc}(require("${p.node.arguments[0].value}"))`);
+            }
           });
         }
       },
